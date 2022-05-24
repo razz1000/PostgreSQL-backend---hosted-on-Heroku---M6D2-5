@@ -12,7 +12,7 @@ productRouter.get("/", async (req, res, next) => {
     res.send(products);
   } catch (error) {
     console.log(error);
-    next(err);
+    next(error);
   }
 });
 
@@ -26,7 +26,7 @@ productRouter.get("/:id", async (req, res, next) => {
     }
   } catch (error) {
     console.log(error);
-    next(err);
+    next(error);
   }
 });
 
@@ -36,7 +36,7 @@ productRouter.post("/", async (req, res, next) => {
     res.send(newProduct);
   } catch (error) {
     console.log(error);
-    next(err);
+    next(error);
   }
 });
 
@@ -65,7 +65,7 @@ productRouter.delete("/:id", async (req, res, next) => {
     res.send({ rows });
   } catch (error) {
     console.log(error);
-    next(err);
+    next(error);
   }
 });
 

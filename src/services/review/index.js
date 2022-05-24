@@ -11,7 +11,7 @@ reviewRouter.get("/", async (req, res, next) => {
     res.send(review);
   } catch (error) {
     console.log(error);
-    next(err);
+    next(error);
   }
 });
 
@@ -27,7 +27,7 @@ reviewRouter.get("/:id", async (req, res, next) => {
     }
   } catch (error) {
     console.log(error);
-    next(err);
+    next(error);
   }
 });
 
@@ -37,7 +37,7 @@ reviewRouter.post("/", async (req, res, next) => {
     res.send(review);
   } catch (error) {
     console.log(error);
-    next(err);
+    next(error);
   }
 });
 
@@ -52,7 +52,7 @@ reviewRouter.put("/:id", async (req, res, next) => {
     res.send(data);
   } catch (error) {
     console.log(error);
-    next(err);
+    next(error);
   }
 });
 
