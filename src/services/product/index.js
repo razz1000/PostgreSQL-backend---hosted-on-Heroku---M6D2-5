@@ -1,13 +1,14 @@
 import express from "express";
 import models from "../../db/models/index.js";
 
-const { Product, Review } = models;
+const { Product, Review, Category, User, ProductCategory } = models;
 const productRouter = express.Router();
 
 productRouter.get("/", async (req, res, next) => {
   try {
     const products = await Product.findAll({
       include: Review,
+      include: Category,
     });
     res.send(products);
   } catch (error) {

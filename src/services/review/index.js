@@ -2,7 +2,6 @@ import express from "express";
 import models from "../../db/models/index.js";
 
 const { Review, Product } = models;
-
 const reviewRouter = express.Router();
 
 reviewRouter.get("/", async (req, res, next) => {

@@ -12,10 +12,14 @@ const Review = sequelize.define("review", {
     type: DataTypes.TEXT,
     allowNull: false,
   },
-  productId: {
-    type: DataTypes.TEXT,
+  rate: {
+    type: DataTypes.INTEGER,
     allowNull: false,
   },
+  /* productId: {
+    type: DataTypes.TEXT,
+    allowNull: false,
+  }, */
   /* productId: {
     type: DataTypes.UUID,
   }, */
