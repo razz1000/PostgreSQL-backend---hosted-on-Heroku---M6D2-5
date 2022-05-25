@@ -7,8 +7,18 @@ const productRouter = express.Router();
 productRouter.get("/", async (req, res, next) => {
   try {
     const products = await Product.findAll({
-      include: Review,
-      include: Category,
+      /*   include: [
+        {
+          model: Review,
+        },
+      ]  */
+      include: [
+        {
+          model: Review,
+          include: { model: User, attributes: ["name", "lastName"] },
+        },
+        { model: Category, through: { attributes: [] } },
+      ],
     });
     res.send(products);
   } catch (error) {
@@ -33,8 +43,25 @@ productRouter.get("/:id", async (req, res, next) => {
 
 productRouter.post("/", async (req, res, next) => {
   try {
-    const newProduct = await Product.create(req.body);
-    res.send(newProduct);
+    const { name, description, image, price, categories } = req.body;
+    const newProduct = await Product.create({
+      name,
+      description,
+      image,
+      price,
+    });
+    const productId = newProduct.id;
+    const data = [];
+    if (categories) {
+      categories.forEach((categoryId) => {
+        data.push({ productId, categoryId });
+      });
+      await ProductCategory.bulkCreate(data);
+
+      res.send(newProduct);
+    } else {
+      res.send(newProduct);
+    }
   } catch (error) {
     console.log(error);
     next(error);
