@@ -1,5 +1,7 @@
 import express from "express";
 import models from "../../db/models/index.js";
+import { Op } from "sequelize";
+import { query } from "express";
 
 const { Product, Review, Category, User, ProductCategory } = models;
 const productRouter = express.Router();
@@ -7,11 +9,24 @@ const productRouter = express.Router();
 productRouter.get("/", async (req, res, next) => {
   try {
     const products = await Product.findAll({
-      /*   include: [
-        {
-          model: Review,
-        },
-      ]  */
+      where: req.query.search && {
+        [Op.or]: [
+          {
+            name: {
+              [Op.iLike]: `%${req.query.search}%`,
+            },
+          },
+          {
+            description: {
+              [Op.iLike]: `%${req.query.search}%`,
+            },
+          },
+          /*           {
+            $price$: 22, // This one does not seem to work. Ask why.
+          }, */
+        ],
+      },
+
       include: [
         {
           model: Review,
@@ -19,6 +34,9 @@ productRouter.get("/", async (req, res, next) => {
         },
         { model: Category, through: { attributes: [] } },
       ],
+      offset: req.query.limit * req.query.offset,
+      limit: req.query.limit,
+      order: [["name", "ASC"]],
     });
     res.send(products);
   } catch (error) {
