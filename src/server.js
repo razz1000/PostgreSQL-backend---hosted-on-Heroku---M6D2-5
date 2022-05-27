@@ -23,16 +23,15 @@ const PORT = process.env.PORT || 5001;
 
 const initialize = async () => {
   try {
-    process.env.DATABASE,
-      process.env.USER,
-      process.env.PASSWORD,
+    process.env.PGDATABASE,
+      process.env.PGUSER,
+      process.env.PGPASSWORD,
       {
-        port: process.env.PORT,
-        host: process.env.HOST,
+        port: process.env.PGPORT,
+        host: process.env.PGHOST,
         dialect: "postgres",
-        //or the longer string
+
         dialectOptions: {
-          // IMPORTANT
           ssl: {
             require: true,
             rejectUnauthorized: false,
