@@ -30,13 +30,11 @@ User.belongsToMany(Product, {
   as: "productlikes",
 });
 
-Product.belongsToMany(User, {
-  through: { model: Cart, unique: false },
-});
+User.hasMany(Cart, { onDelete: "CASCADE" });
+Cart.belongsTo(User, { onDelete: "CASCADE" });
 
-User.belongsToMany(Product, {
-  through: { model: Cart, unique: false },
-});
+Product.hasMany(Cart, { onDelete: "CASCADE" });
+Cart.belongsTo(Product, { onDelete: "CASCADE" });
 
 export default {
   Product,

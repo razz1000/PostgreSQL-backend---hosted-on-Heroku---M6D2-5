@@ -22,16 +22,6 @@ productRouter.get("/", async (req, res, next) => {
               [Op.iLike]: `%${req.query.search}%`,
             },
           },
-
-          /* {
-            "$category.name$": {
-              [Op.iLike]: `%${req.query.search}%`,
-            },
-          },
- */
-          /*           {
-            $price$: 22, // This one does not seem to work. Ask why.
-          }, */
         ],
       },
 
@@ -58,6 +48,7 @@ productRouter.get("/", async (req, res, next) => {
           as: "likes",
         },
       ],
+      order: [["price", "DESC"]],
 
       /*         {
           model: User,
