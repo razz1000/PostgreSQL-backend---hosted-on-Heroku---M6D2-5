@@ -19,10 +19,27 @@ server.use("/users", usersRouter);
 server.use("/likes", likeRouter);
 server.use("/cart", cartRouter);
 
-const { PORT = 5001 } = process.env;
+const PORT = process.env.PORT || 5001;
 
 const initialize = async () => {
   try {
+    process.env.DATABASE,
+      process.env.USER,
+      process.env.PASSWORD,
+      {
+        port: process.env.PORT,
+        host: process.env.HOST,
+        dialect: "postgres",
+        //or the longer string
+        dialectOptions: {
+          // IMPORTANT
+          ssl: {
+            require: true,
+            rejectUnauthorized: false,
+          },
+        },
+      };
+
     server.listen(PORT, async () => {
       console.log("Server is listening on port " + PORT);
       await testDB();
