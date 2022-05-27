@@ -46,7 +46,7 @@ productRouter.get("/", async (req, res, next) => {
           through: { attributes: [] },
           /*   where: req.query.category
             ? {
-                name: { [Op.iLike]: "%" + req.query.category + "%" },
+                name: { [Op.iLike]: `%${req.query.search}%` },
               }
             : {},
       */
