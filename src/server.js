@@ -6,6 +6,8 @@ import reviewRouter from "./services/review/index.js";
 import sequelize from "./db/index.js";
 import categoryRouter from "./services/categories/index.js";
 import usersRouter from "./services/users/index.js";
+import likeRouter from "./services/like/index.js";
+import cartRouter from "./services/cart/index.js";
 
 const server = express();
 server.use(express.json());
@@ -14,6 +16,9 @@ server.use("/products", productRouter);
 server.use("/reviews", reviewRouter);
 server.use("/categories", categoryRouter);
 server.use("/users", usersRouter);
+server.use("/likes", likeRouter);
+server.use("/cart", cartRouter);
+
 const { PORT = 5001 } = process.env;
 
 const initialize = async () => {

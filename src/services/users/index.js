@@ -1,29 +1,30 @@
 import express from "express";
 import models from "../../db/models/index.js";
 
-const { User, Blog } = models;
+const { User, Product } = models;
 
 const usersRouter = express.Router();
 
 usersRouter.get("/", async (req, res, next) => {
   try {
     const users = await User.findAll({
-      /*       include: { model: Blog, attributes: ["title", "content"] }, */
-      // attributes:["name", "lastName"]  select specific
-      //  attributes: { exclude: ["age", "country"] }, exclude multiple columns
-      // attributes: { exclude: "age" }, // exclude single
+      include: [
+        {
+          model: Product,
+          through: { attributes: [] },
+          as: "productlikes",
+        },
+      ],
     });
     res.send(users);
   } catch (error) {
     console.log(error);
-    next(err);
+    next(error);
   }
 });
 usersRouter.get("/:id", async (req, res, next) => {
   try {
-    const user = await User.findByPk(req.params.id, {
-      include: Blog,
-    });
+    const user = await User.findByPk(req.params.id, {});
     if (!user) {
       res.status(404).send("Not found");
     } else {
@@ -31,7 +32,7 @@ usersRouter.get("/:id", async (req, res, next) => {
     }
   } catch (error) {
     console.log(error);
-    next(err);
+    next(error);
   }
 });
 usersRouter.post("/", async (req, res, next) => {
@@ -41,7 +42,7 @@ usersRouter.post("/", async (req, res, next) => {
     res.send(user);
   } catch (error) {
     console.log(error);
-    next(err);
+    next(error);
   }
 });
 usersRouter.put("/:id", async (req, res, next) => {
@@ -55,7 +56,7 @@ usersRouter.put("/:id", async (req, res, next) => {
     res.send(data[1][0]);
   } catch (error) {
     console.log(error);
-    next(err);
+    next(error);
   }
 });
 
@@ -69,7 +70,7 @@ usersRouter.delete("/:id", async (req, res, next) => {
     res.send({ rows });
   } catch (error) {
     console.log(error);
-    next(err);
+    next(error);
   }
 });
 

@@ -1,9 +1,10 @@
 import express from "express";
+import sequelize from "../../db/index.js";
 import models from "../../db/models/index.js";
 import { Op } from "sequelize";
 import { query } from "express";
 
-const { Product, Review, Category, User, ProductCategory } = models;
+const { Product, Review, Category, User, ProductCategory, Like } = models;
 const productRouter = express.Router();
 
 productRouter.get("/", async (req, res, next) => {
@@ -21,6 +22,13 @@ productRouter.get("/", async (req, res, next) => {
               [Op.iLike]: `%${req.query.search}%`,
             },
           },
+
+          /* {
+            "$category.name$": {
+              [Op.iLike]: `%${req.query.search}%`,
+            },
+          },
+ */
           /*           {
             $price$: 22, // This one does not seem to work. Ask why.
           }, */
@@ -30,13 +38,46 @@ productRouter.get("/", async (req, res, next) => {
       include: [
         {
           model: Review,
-          include: { model: User, attributes: ["name", "lastName"] },
+          include: { model: User, attributes: ["name", "lastName", "id"] },
         },
-        { model: Category, through: { attributes: [] } },
+
+        {
+          model: Category,
+          through: { attributes: [] },
+          /*   where: req.query.category
+            ? {
+                name: { [Op.iLike]: "%" + req.query.category + "%" },
+              }
+            : {},
+      */
+        },
+
+        {
+          model: User,
+          through: { attributes: [] },
+          as: "likes",
+        },
       ],
-      offset: req.query.limit * req.query.offset,
+
+      /*         {
+          model: User,
+          through: { attributes: [] },
+          as: "likes",
+          attributes: [
+            "id",
+            [sequelize.fn("count", sequelize.col("likes.id")), "unitQty"],
+          ],
+
+          group: ["likesId", "likes.id"],
+
+          where: {
+            likesId: req.params.usersId,
+          },
+        },
+ */
+      /*       offset: req.query.limit * req.query.offset,
       limit: req.query.limit,
-      order: [["name", "ASC"]],
+      order: [["name", "ASC"]], */
     });
     res.send(products);
   } catch (error) {
@@ -45,9 +86,33 @@ productRouter.get("/", async (req, res, next) => {
   }
 });
 
-productRouter.get("/:id", async (req, res, next) => {
+/* productRouter.get("/:id", async (req, res, next) => {
   try {
     const product = await Product.findByPk(req.params.id);
+    if (!product) {
+      res.status(404).send("Product not found");
+    } else {
+      res.send(product);
+    }
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+}); */
+
+productRouter.get("/sortbycategory", async (req, res, next) => {
+  try {
+    const product = await Product.findAll({
+      include: Category,
+
+      attributes: [
+        "categoryId",
+        [sequelize.fn("count", "id"), "total_products"],
+      ],
+      group: ["categoryId", "category.id"],
+      order: ["total_products", "DESC"],
+    });
+
     if (!product) {
       res.status(404).send("Product not found");
     } else {
