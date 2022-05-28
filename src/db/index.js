@@ -7,6 +7,7 @@ const sequelize = new Sequelize(PGDATABASE, PGUSER, PGPASSWORD, {
   port: PGPORT,
   dialect: "postgres",
   logging: false,
+  dialectOptions: {},
 });
 
 export const testDB = async () => {

@@ -23,22 +23,6 @@ const PORT = process.env.PORT || 5001;
 
 const initialize = async () => {
   try {
-    process.env.PGDATABASE,
-      process.env.PGUSER,
-      process.env.PGPASSWORD,
-      {
-        port: process.env.PGPORT,
-        host: process.env.PGHOST,
-        dialect: "postgres",
-
-        dialectOptions: {
-          ssl: {
-            require: true,
-            rejectUnauthorized: false,
-          },
-        },
-      };
-
     server.listen(PORT, async () => {
       console.log("Server is listening on port " + PORT);
       await testDB();
