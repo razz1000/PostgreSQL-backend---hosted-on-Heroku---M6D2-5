@@ -7,12 +7,12 @@ const sequelize = new Sequelize(PGDATABASE, PGUSER, PGPASSWORD, {
   port: PGPORT,
   dialect: "postgres",
   logging: false,
-  dialectOptions: {
+  /* dialectOptions: {
     ssl: {
       require: true,
       rejectUnauthorized: false,
     },
-  },
+  }, */
 });
 
 export const testDB = async () => {

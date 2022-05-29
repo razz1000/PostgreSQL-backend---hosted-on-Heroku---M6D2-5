@@ -19,7 +19,7 @@ server.use("/users", usersRouter);
 server.use("/likes", likeRouter);
 server.use("/cart", cartRouter);
 
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 5003;
 
 const initialize = async () => {
   try {
