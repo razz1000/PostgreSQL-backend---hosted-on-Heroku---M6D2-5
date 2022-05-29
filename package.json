@@ -13,9 +13,6 @@
   "description": "m6d2",
   "main": "index.js",
   "type": "module",
-  "engines": {
-    "node": "v14.2.0"
-  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon -r dotenv/config ./src/server.js",
